@@ -1,12 +1,12 @@
 //
 // Tests a simple parallel function
 //
-#include <iostream>
+#include <stdio.h>
 
 #include "runtime.h"
 
 void outlined(int tid, ...) {
-    std::cout << "Thread: " << tid << std::endl;
+    printf("TID: %d\n", tid);
 }
 
 int main() {

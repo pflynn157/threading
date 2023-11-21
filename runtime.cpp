@@ -4,9 +4,12 @@
 #include <memory>
 #include <vector>
 
-#include "runtime.h"
+extern "C" {        // We need this to be a C library
 
-void __rt_fork_call(int thread_count, rt_func func, int argc, ...) {
+static int threads;
+
+void __rt_fork_call(int thread_count, void(*func)(int tid, ...), int argc, ...) {
+    threads = thread_count;
     std::vector<std::thread> thread_pool;
     for (int i = 0; i<thread_count; i++) {
         std::thread thread(func, i);
@@ -17,4 +20,17 @@ void __rt_fork_call(int thread_count, rt_func func, int argc, ...) {
         thread_pool[i].join();
     }
 }
+
+//
+// Partitions for loops
+//
+void __rt_init_for(int tid, int *start, int *end, int *step) {
+    int end1 = *end;
+    int part_size = (*end / threads) + (*end % threads);
+    *start = tid * part_size;
+    *end = *start + part_size;
+    if (*end > end1) *end = end1;
+}
+
+} // end extern C
 

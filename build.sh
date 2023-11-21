@@ -1,3 +1,10 @@
 #!/bin/bash
-g++ parallel.cpp runtime.cpp -o prt -lpthread -g
+
+g++ -fPIC -c runtime.cpp -o runtime.o
+g++ -shared -o libruntime.so -lpthread \
+    runtime.o
+
+gcc parallel.c -o prt -L. -lruntime #-lpthread -g
+gcc parfor.c -o parfor -L. -lruntime #-lpthread -g
+
 
