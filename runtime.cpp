@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <thread>
 #include <memory>
 #include <vector>
@@ -8,7 +9,7 @@ extern "C" {        // We need this to be a C library
 
 static int threads;
 
-void __rt_fork_call(int thread_count, void(*func)(int tid, ...), int argc, ...) {
+void __rt_fork_call(int thread_count, void(*func)(int tid, va_list args), int argc, ...) {
     threads = thread_count;
     std::vector<std::thread> thread_pool;
     for (int i = 0; i<thread_count; i++) {

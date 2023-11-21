@@ -6,5 +6,5 @@ g++ -shared -o libruntime.so -lpthread \
 
 gcc parallel.c -o prt -L. -lruntime #-lpthread -g
 gcc parfor.c -o parfor -L. -lruntime #-lpthread -g
-
+#gcc reduction.c -o rd -L. -lruntime
 
